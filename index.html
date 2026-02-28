@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <title>Navbar</title>
 </head>
-<body>
 
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
   <div class="container-fluid">
@@ -25,18 +24,18 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 my-4 gap-3">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Inicio</a>
+            <a class="nav-link" role="button" id="inicio">Inicio</a>
           </li>
           <li class="nav-item">
-            <button class="nav-link" role="button">Listado de productos</button>
+            <button class="nav-link" role="button" id="listadoProductos">Listado de productos</button>
           </li>
           <li class="nav-item dropdown">
             <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Ventas
             </button>
             <ul class="dropdown-menu dropdown-menu-dark">
-              <li><button class="dropdown-item">Historial de ventas</button></li>
-              <li><button class="dropdown-item">Generar nueva venta</button></li>
+              <li><button class="dropdown-item" id="listadoVentas">Historial de ventas</button></li>
+              <li><button class="dropdown-item" id="nuevaVenta">Generar nueva venta</button></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -44,8 +43,8 @@
               Administración
             </button>
             <ul class="dropdown-menu dropdown-menu-dark">
-              <li><button class="dropdown-item">Listado de vendedores</button></li>
-              <li><button class="dropdown-item">Solicitudes de acceso</button></li>
+              <li><button class="dropdown-item" id="listadoVendedores">Listado de vendedores</button></li>
+              <li><button class="dropdown-item" id="solicitudAcceso">Solicitudes de acceso</button></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -56,137 +55,37 @@
     </div>
   </div>
 </nav>
-
-<div class="card shadow m-3">
-  <div class="card-header gap-5">
-    <h5 class="gap-5 text-center">Listado de Ventas</h5>
-  </div>
-
-  <div class="card-body p-0">
-    <div class="table-responsive">
-      <table class="table table-striped mb-0 table-bordered">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Cliente</th>
-            <th>Total</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>$15.000</td>
-            <td>21/02/2026</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Ana López</td>
-            <td>$8.500</td>
-            <td>20/02/2026</td>
-          </tr>
-                    <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>$15.000</td>
-            <td>21/02/2026</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Ana López</td>
-            <td>$8.500</td>
-            <td>20/02/2026</td>
-          </tr>
-                    <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>$15.000</td>
-            <td>21/02/2026</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Ana López</td>
-            <td>$8.500</td>
-            <td>20/02/2026</td>
-          </tr>
-                    <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>$15.000</td>
-            <td>21/02/2026</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Ana López</td>
-            <td>$8.500</td>
-            <td>20/02/2026</td>
-          </tr>
-                    <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>$15.000</td>
-            <td>21/02/2026</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Ana López</td>
-            <td>$8.500</td>
-            <td>20/02/2026</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>$15.000</td>
-            <td>21/02/2026</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Ana López</td>
-            <td>$8.500</td>
-            <td>20/02/2026</td>
-          </tr>
-                              <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>$15.000</td>
-            <td>21/02/2026</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Ana López</td>
-            <td>$8.500</td>
-            <td>20/02/2026</td>
-          </tr>
-                              <tr>
-            <td>1</td>
-            <td>Juan Pérez</td>
-            <td>$15.000</td>
-            <td>21/02/2026</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Ana López</td>
-            <td>$8.500</td>
-            <td>20/02/2026</td>
-          </tr>
-          
-        </tbody>
-      </table>
-    </div>
-  </div>
+<body>
+  <div class="card-header gap-5 " id = "mainContent">
+    <div class="card shadow m-3">
   
-    <div class="card-footer">
-      <div class="d-flex justify-content-end">
-        <ul class="pagination justify-content-end mb-0" id="paginacion">
-          <!-- Se genera dinámicamente -->
-        </ul>
+    <h5 class="gap-5 text-center">Inicio</h5>
+    <p class="text-center">
+        Bienvenido al sistema de gestión de stock. 
+        Utilice el menú para navegar por las diferentes secciones.
+    </p>
+    <img class=" md" src="assets/images/foto totalmente real de un laburante.jpg" alt="foto real de un laburante.jpg">
+ 
+  </div>
+  </div>
+    <div class="modal fade" id="miModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ticket</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="ticketBody"></div>
       </div>
     </div>
-    </div>
-</div>
-
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js-app/tabla-productos.js"></script>
+    </div> 
 </body>
+<script src="js-app/inicio.js"></script>
+<script src="js-app/alertas-generales.js"></script>
+<script src="js-app/tabla-productos.js"></script>
+<script src="js-app/nueva-venta.js"></script>
+<script src="js-app/tabla-ventas.js"></script>
+<script src="js-app/tabla-solicitudes-vendedores.js"></script>
+<script src="js-app/tabla-vendedores.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
 </html>

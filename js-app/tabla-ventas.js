@@ -1,27 +1,30 @@
-document.getElementById("listadoProductos").addEventListener("click", function() {
+let ventasGlobal = [];
+
+
+document.getElementById("listadoVentas").addEventListener("click", function() {
  mainContent.innerHTML = `
   <div class="card shadow m-3">
   
-    <h5 class="gap-5 text-center">Listado de productos</h5>
+    <h5 class="gap-5 text-center">Listado de ventas</h5>
 
   <div class="card-body p-0">
     <div class="table-responsive">
       <table class="table table-striped mb-0 table-bordered">
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Precio unitario</th>
-            <th>Stock</th>
-            <th>Descripción</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Vendedor</th>
+            <th>Ticket</th>
           </tr>
         </thead>
-        <tbody id="tablaProductos">
+        <tbody id="tablaVentas">
 
         </tbody>
       </table>
     </div>
   </div>
-  
+
     <div class="card-footer">
       <div class="d-flex justify-content-end">
         <ul class="pagination justify-content-end mb-0" id="paginacion">
@@ -29,55 +32,68 @@ document.getElementById("listadoProductos").addEventListener("click", function()
       </div>
     </div>
  </div>`;
- tbody = document.getElementById("tablaProductos");
- cargarPaginaProductos(0);
+ tbody = document.getElementById("tablaVentas");
+ cargarPaginaVentas(0);
 });
 
 
-function renderTablaProductos(productos) {
+
+
+function renderTablaVentas(ventas) {
     let filas = "";
     tbody.innerHTML = ``;
-    productos.forEach(p => {
+    ventasGlobal = ventas;
+    ventas.forEach((v,index) => {
         filas += `
             <tr>
-                <td>${p.name}</td>
-                <td>${p.price.toLocaleString()}</td>
-                <td>${p.stock}</td>
-                <td class="w-25">
-                    ${p.description}
-                </td>
+                <td>${v.date}</td>
+                <td>${v.total.toLocaleString()}</td>
+                <td>${v.sellerName}</td>
                 <td class="text-center p-3">
-                    <button class="m-1 btn btn-sm btn-primary col-12 col-md-6 col-lg-4"
-                            onclick="editarProducto(${p.id})">
-                          Editar  
-                    </button>
-                    
-                    <button class="m-1 btn btn-sm btn-danger col-12 col-md-6 col-lg-4"
-                            onclick="eliminarProducto(${p.id})">
-                        Eliminar
+                    <button class="btn btn-sm btn-primary col-12 col-md-6 col-lg-4"
+                            onclick="mostrarTicket(${index})">
+                        Ver ticket
                     </button>
                 </td>
             </tr>
-            
         `;
     });
-    
+
     tbody.innerHTML = filas;
 }
 
-function cargarPaginaProductos(page) {
+function mostrarTicket(index) {
+
+    const modalBody = document.getElementById("ticketBody");
+
+    modalBody.innerHTML = ventasGlobal[index].ticket.map(detail => `
+        <div class="border-bottom mb-2 pb-2">
+            <p><strong>Producto:</strong> ${detail.productName}</p>
+            <p><strong>Cantidad:</strong> ${detail.quantity}</p>
+            <p><strong>Precio:</strong> $${detail.unitPrice.toLocaleString()}</p>
+            <p><strong>Total por item:</strong> $${detail.itemTotal.toLocaleString()}</p>
+        </div>
+    `).join("");
+    modalBody.innerHTML += `<h5 class="text-end">Total: $${ventasGlobal[index].total.toLocaleString()}</h5>`;
+
+    const modal = new bootstrap.Modal(document.getElementById("miModal"));
+    modal.show();
+}
+
+
+function cargarPaginaVentas(page) {
     tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando...</td></tr>`;
 
-    fetch(`http://localhost:8080/product?page=${page}&size=${size}`)
+    fetch(`http://localhost:8080/sale?page=${page}&size=${size}`)
         .then(res => res.json())
         .then(data => {
             paginaActual = data.number;
-            renderTablaProductos(data.content);
-            renderPaginacionProductos(data);
+            renderTablaVentas(data.content);
+            renderPaginacionVentas(data);
         });
 }
 
-function renderPaginacionProductos(data) {
+function renderPaginacionVentas(data) {
     const ul = document.getElementById("paginacion");
     ul.innerHTML = "";
 
@@ -85,7 +101,7 @@ function renderPaginacionProductos(data) {
     ul.innerHTML += `
         <li class="page-item ${data.first ? 'disabled' : ''}">
             <button class="page-link"
-                ${data.first ? '' : `onclick="cargarPaginaProductos(${paginaActual - 1})"`}>
+                ${data.first ? '' : `onclick="cargarPaginaVentas(${paginaActual - 1})"`}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
                 </svg> 
@@ -106,7 +122,7 @@ function renderPaginacionProductos(data) {
     ul.innerHTML += `
         <li class="page-item ${data.last ? 'disabled' : ''}">
             <button class="page-link"
-                ${data.last ? '' : `onclick="cargarPaginaProductos(${paginaActual + 1})"`}>
+                ${data.last ? '' : `onclick="cargarPaginaVentas(${paginaActual + 1})"`}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
                 </svg>
