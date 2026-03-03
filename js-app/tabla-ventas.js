@@ -1,5 +1,8 @@
 let ventasGlobal = [];
 
+export function renderVentas() {
+    return null;
+}
 
 document.getElementById("listadoVentas").addEventListener("click", function() {
  mainContent.innerHTML = `
