@@ -21,7 +21,7 @@ export const authState = {
 
 export async function loadUser() {
   try {
-    const res = await fetch("/auth/me", { credentials: "include" });
+    const res = await fetch("http://localhost:8080/auth/me", { credentials: "include" });
     if (!res.ok) throw new Error();
 
     const data = await res.json();

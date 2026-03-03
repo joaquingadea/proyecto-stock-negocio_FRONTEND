@@ -1,79 +1,36 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
-               script-src 'self'; 
-               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; 
-               img-src 'self' data:;">
+  <meta http-equiv="Content-Security-Policy" content="
+default-src 'self';
+script-src 'self' 'unsafe-inline' 'unsafe-eval';
+style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+img-src 'self' data:;
+connect-src 'self' http://localhost:8080;
+">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <title>Navbar</title>
 </head>
+<div id="navBar">
+</div>
 
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-  <div class="container-fluid">
-    <!-- Logo -->
-    <a class="navbar-brand" href="#">MiSistema</a>
-    <!-- Botón para abrir el menú lateral -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <!-- Offcanvas -->
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 my-4 gap-3">
-          <li class="nav-item">
-            <a class="nav-link" role="button" id="inicio" href="index.html">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" role="button" id="listadoProductos">Listado de productos</button>
-          </li>
-          <li class="nav-item dropdown">
-            <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Ventas
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><button class="dropdown-item" id="listadoVentas">Historial de ventas</button></li>
-              <li><button class="dropdown-item" id="nuevaVenta">Generar nueva venta</button></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Administración
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><button class="dropdown-item" id="listadoVendedores">Listado de vendedores</button></li>
-              <li><button class="dropdown-item" id="solicitudAcceso">Solicitudes de acceso</button></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" role="button">Cerrar sesión</button>
-          </li>
-        </ul>
-      </div>
+<body>
+  <div class="card-header gap-5 " id="mainContent">
+    <div class="card shadow m-3">
+
+      <h5 class="gap-5 text-center">Inicio</h5>
+      <p class="text-center">
+        Bienvenido al sistema de gestión de stock.
+        Utilice el menú para navegar por las diferentes secciones.
+      </p>
+      <img class=" md" src="assets/images/foto totalmente real de un laburante.jpg" alt="foto real de un laburante.jpg">
+
     </div>
   </div>
-</nav>
-<body>
-  <div class="card-header gap-5 " id = "mainContent">
-    <div class="card shadow m-3">
-  
-    <h5 class="gap-5 text-center">Inicio</h5>
-    <p class="text-center">
-        Bienvenido al sistema de gestión de stock. 
-        Utilice el menú para navegar por las diferentes secciones.
-    </p>
-    <img class=" md" src="assets/images/foto totalmente real de un laburante.jpg" alt="foto real de un laburante.jpg">
- 
-  </div>
-  </div>
-    <div class="modal fade" id="miModal" tabindex="-1">
+  <div class="modal fade" id="miModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -83,8 +40,10 @@
         <div class="modal-body" id="ticketBody"></div>
       </div>
     </div>
-    </div> 
+  </div>
 </body>
+<script src="js-app/inicio.js"></script>
 <script type="module" src="js-app/main.js"></script>
 <script src="./js/bootstrap.bundle.min.js"></script>
+
 </html>

@@ -1,11 +1,10 @@
 let ventasGlobal = [];
 
 export function renderVentas() {
-    return null;
-}
 
-document.getElementById("listadoVentas").addEventListener("click", function() {
- mainContent.innerHTML = `
+    document.getElementById("listadoVentas").addEventListener("click", function () {
+        goTo("/ventas");
+        mainContent.innerHTML = `
   <div class="card shadow m-3">
   
     <h5 class="gap-5 text-center">Listado de ventas</h5>
@@ -35,19 +34,19 @@ document.getElementById("listadoVentas").addEventListener("click", function() {
       </div>
     </div>
  </div>`;
- tbody = document.getElementById("tablaVentas");
- cargarPaginaVentas(0);
-});
+        tbody = document.getElementById("tablaVentas");
+        cargarPaginaVentas(0);
+    });
 
 
 
 
-function renderTablaVentas(ventas) {
-    let filas = "";
-    tbody.innerHTML = ``;
-    ventasGlobal = ventas;
-    ventas.forEach((v,index) => {
-        filas += `
+    function renderTablaVentas(ventas) {
+        let filas = "";
+        tbody.innerHTML = ``;
+        ventasGlobal = ventas;
+        ventas.forEach((v, index) => {
+            filas += `
             <tr>
                 <td>${v.date}</td>
                 <td>${v.total.toLocaleString()}</td>
@@ -60,16 +59,16 @@ function renderTablaVentas(ventas) {
                 </td>
             </tr>
         `;
-    });
+        });
 
-    tbody.innerHTML = filas;
-}
+        tbody.innerHTML = filas;
+    }
 
-function mostrarTicket(index) {
+    function mostrarTicket(index) {
 
-    const modalBody = document.getElementById("ticketBody");
+        const modalBody = document.getElementById("ticketBody");
 
-    modalBody.innerHTML = ventasGlobal[index].ticket.map(detail => `
+        modalBody.innerHTML = ventasGlobal[index].ticket.map(detail => `
         <div class="border-bottom mb-2 pb-2">
             <p><strong>Producto:</strong> ${detail.productName}</p>
             <p><strong>Cantidad:</strong> ${detail.quantity}</p>
@@ -77,31 +76,31 @@ function mostrarTicket(index) {
             <p><strong>Total por item:</strong> $${detail.itemTotal.toLocaleString()}</p>
         </div>
     `).join("");
-    modalBody.innerHTML += `<h5 class="text-end">Total: $${ventasGlobal[index].total.toLocaleString()}</h5>`;
+        modalBody.innerHTML += `<h5 class="text-end">Total: $${ventasGlobal[index].total.toLocaleString()}</h5>`;
 
-    const modal = new bootstrap.Modal(document.getElementById("miModal"));
-    modal.show();
-}
+        const modal = new bootstrap.Modal(document.getElementById("miModal"));
+        modal.show();
+    }
 
 
-function cargarPaginaVentas(page) {
-    tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando...</td></tr>`;
+    function cargarPaginaVentas(page) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando...</td></tr>`;
 
-    fetch(`http://localhost:8080/sale?page=${page}&size=${size}`)
-        .then(res => res.json())
-        .then(data => {
-            paginaActual = data.number;
-            renderTablaVentas(data.content);
-            renderPaginacionVentas(data);
-        });
-}
+        fetch(`http://localhost:8080/sale?page=${page}&size=${size}`)
+            .then(res => res.json())
+            .then(data => {
+                paginaActual = data.number;
+                renderTablaVentas(data.content);
+                renderPaginacionVentas(data);
+            });
+    }
 
-function renderPaginacionVentas(data) {
-    const ul = document.getElementById("paginacion");
-    ul.innerHTML = "";
+    function renderPaginacionVentas(data) {
+        const ul = document.getElementById("paginacion");
+        ul.innerHTML = "";
 
-    // Botón Anterior
-    ul.innerHTML += `
+        // Botón Anterior
+        ul.innerHTML += `
         <li class="page-item ${data.first ? 'disabled' : ''}">
             <button class="page-link"
                 ${data.first ? '' : `onclick="cargarPaginaVentas(${paginaActual - 1})"`}>
@@ -112,8 +111,8 @@ function renderPaginacionVentas(data) {
         </li>
     `;
 
-    // Texto Página X de Y
-    ul.innerHTML += `
+        // Texto Página X de Y
+        ul.innerHTML += `
         <li class="page-item disabled">
             <span class="page-link bg-white border-0 fw-bold">
                 Página ${data.number + 1} de ${data.totalPages}
@@ -121,8 +120,8 @@ function renderPaginacionVentas(data) {
         </li>
     `;
 
-    // Botón Siguiente
-    ul.innerHTML += `
+        // Botón Siguiente
+        ul.innerHTML += `
         <li class="page-item ${data.last ? 'disabled' : ''}">
             <button class="page-link"
                 ${data.last ? '' : `onclick="cargarPaginaVentas(${paginaActual + 1})"`}>
@@ -132,4 +131,5 @@ function renderPaginacionVentas(data) {
             </button>
         </li>
     `;
+    }
 }
