@@ -1,5 +1,10 @@
-document.getElementById("solicitudAcceso").addEventListener("click", function() {
- mainContent.innerHTML = `
+let tbody;
+let paginaActual = 0;
+const size = 5;
+export function renderSolicitudes() {
+
+  const main = document.getElementById("mainContent");
+  mainContent.innerHTML = `
   <div class="card shadow m-3 w-75 m-auto mt-4">
   
     <h5 class="p-3 gap-5 text-center">Listado de solicitudes de acceso</h5>
@@ -27,12 +32,13 @@ document.getElementById("solicitudAcceso").addEventListener("click", function() 
       </div>
     </div>
  </div>`;
- tbody = document.getElementById("tablaSolicitudesVendedores");
+ let tbody = document.getElementById("tablaSolicitudesVendedores");
  cargarPaginaSolicitudesVendedores(0);
-});
 
 
 
+
+//export function renderSolicitudes() {return null}
 
 function renderTablaSolicitudesVendedores(solicitudes) {
     let filas = "";
@@ -114,4 +120,5 @@ function renderPaginacionSolicitudesVendedores(data) {
             </button>
         </li>
     `;
+}
 }

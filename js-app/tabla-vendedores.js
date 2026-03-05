@@ -1,4 +1,9 @@
-document.getElementById("listadoVendedores").addEventListener("click", function() {
+let tbody;
+let paginaActual = 0;
+const size = 5;
+export function renderVendedores() {
+
+  const main = document.getElementById("mainContent");
  mainContent.innerHTML = `
   <div class="card shadow m-3 w-75 m-auto mt-4">
   
@@ -31,9 +36,7 @@ document.getElementById("listadoVendedores").addEventListener("click", function(
  </div>`;
  tbody = document.getElementById("tablaVendedores");
  cargarPaginaVendedores(0);
-});
-
-
+}
 
 
 function renderTablaVendedores(vendedores) {

@@ -9,9 +9,9 @@ function buscarNombresProductos() {
             productosConStockCache = productos;
         });
 }
+export function renderNuevaVenta() {
 
-document.getElementById("nuevaVenta").addEventListener("click", function () {
-
+  const main = document.getElementById("mainContent");
     mainContent.innerHTML = `
         <h4 class="p-3 text-center">Nueva venta</h4>
 
@@ -122,7 +122,7 @@ document.getElementById("nuevaVenta").addEventListener("click", function () {
                 });
             });
     });
-});
+}
 
 // 🗑 Eliminar producto
 

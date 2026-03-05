@@ -1,10 +1,11 @@
 let ventasGlobal = [];
+let tbody;
+let paginaActual = 0;
+const size = 5;
 
 export function renderVentas() {
-
-    document.getElementById("listadoVentas").addEventListener("click", function () {
-        goTo("/ventas");
-        mainContent.innerHTML = `
+    const mainContent = document.getElementById("mainContent");       
+    mainContent.innerHTML = `
   <div class="card shadow m-3">
   
     <h5 class="gap-5 text-center">Listado de ventas</h5>
@@ -36,7 +37,7 @@ export function renderVentas() {
  </div>`;
         tbody = document.getElementById("tablaVentas");
         cargarPaginaVentas(0);
-    });
+
 
 
 
@@ -63,12 +64,12 @@ export function renderVentas() {
 
         tbody.innerHTML = filas;
     }
-
+    //-----------------------------------------------------------
     function mostrarTicket(index) {
 
-        const modalBody = document.getElementById("ticketBody");
+    const modalBody = document.getElementById("ticketBody");
 
-        modalBody.innerHTML = ventasGlobal[index].ticket.map(detail => `
+    modalBody.innerHTML = ventasGlobal[index].ticket.map(detail => `
         <div class="border-bottom mb-2 pb-2">
             <p><strong>Producto:</strong> ${detail.productName}</p>
             <p><strong>Cantidad:</strong> ${detail.quantity}</p>
@@ -76,13 +77,16 @@ export function renderVentas() {
             <p><strong>Total por item:</strong> $${detail.itemTotal.toLocaleString()}</p>
         </div>
     `).join("");
-        modalBody.innerHTML += `<h5 class="text-end">Total: $${ventasGlobal[index].total.toLocaleString()}</h5>`;
 
-        const modal = new bootstrap.Modal(document.getElementById("miModal"));
-        modal.show();
-    }
+    modalBody.innerHTML += `
+        <h5 class="text-end">Total: $${ventasGlobal[index].total.toLocaleString()}</h5>
+    `;
 
+    const modal = new bootstrap.Modal(document.getElementById("miModal"));
+    modal.show();
+}
 
+window.mostrarTicket = mostrarTicket;
     function cargarPaginaVentas(page) {
         tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando...</td></tr>`;
 

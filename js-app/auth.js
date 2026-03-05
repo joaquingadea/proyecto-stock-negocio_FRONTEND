@@ -5,7 +5,6 @@ export const authState = {
   setUser(user) {
     this.user = user;
   },
-
   clearUser() {
     this.user = null;
   },
@@ -31,7 +30,18 @@ export async function loadUser() {
       roles: data.authorities
     });
 
+    return authState.user;
+
   } catch {
     authState.clearUser();
+    return null;
   }
+}
+
+export function getUser() {
+  return authState.user;
+}
+
+export function getRoles() {
+  return authState.user ? authState.user.roles : [];
 }
