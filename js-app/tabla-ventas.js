@@ -4,7 +4,7 @@ let paginaActual = 0;
 const size = 5;
 
 export function renderVentas() {
-    const mainContent = document.getElementById("mainContent");       
+    const mainContent = document.getElementById("mainContent");
     mainContent.innerHTML = `
   <div class="card shadow m-3">
   
@@ -35,8 +35,8 @@ export function renderVentas() {
       </div>
     </div>
  </div>`;
-        tbody = document.getElementById("tablaVentas");
-        cargarPaginaVentas(0);
+    tbody = document.getElementById("tablaVentas");
+    cargarPaginaVentas(0);
 
 
 
@@ -67,9 +67,9 @@ export function renderVentas() {
     //-----------------------------------------------------------
     function mostrarTicket(index) {
 
-    const modalBody = document.getElementById("ticketBody");
+        const modalBody = document.getElementById("ticketBody");
 
-    modalBody.innerHTML = ventasGlobal[index].ticket.map(detail => `
+        modalBody.innerHTML = ventasGlobal[index].ticket.map(detail => `
         <div class="border-bottom mb-2 pb-2">
             <p><strong>Producto:</strong> ${detail.productName}</p>
             <p><strong>Cantidad:</strong> ${detail.quantity}</p>
@@ -78,19 +78,21 @@ export function renderVentas() {
         </div>
     `).join("");
 
-    modalBody.innerHTML += `
+        modalBody.innerHTML += `
         <h5 class="text-end">Total: $${ventasGlobal[index].total.toLocaleString()}</h5>
     `;
 
-    const modal = new bootstrap.Modal(document.getElementById("miModal"));
-    modal.show();
-}
+        const modal = new bootstrap.Modal(document.getElementById("miModal"));
+        modal.show();
+    }
 
-window.mostrarTicket = mostrarTicket;
+    window.mostrarTicket = mostrarTicket;
     function cargarPaginaVentas(page) {
         tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando...</td></tr>`;
 
-        fetch(`http://localhost:8080/sale?page=${page}&size=${size}`)
+        fetch(`http://localhost:8080/sale?page=${page}&size=${size}`, {
+            credentials: "include"
+        })
             .then(res => res.json())
             .then(data => {
                 paginaActual = data.number;

@@ -1,4 +1,4 @@
-import { getRoles } from "./auth";
+import { getRoles } from "./auth.js";
 
 export function renderProductos() {
   const mainContent = document.getElementById("mainContent");
@@ -55,7 +55,9 @@ export function renderProductos() {
   function cargarPaginaProductos(page) {
     tbody.innerHTML = `<tr><td colspan="5" class="text-center">Cargando...</td></tr>`;
 
-    fetch(`http://localhost:8080/product?page=${page}&size=${size}`)
+    fetch(`http://localhost:8080/product?page=${page}&size=${size}`, {
+      credentials: "include"
+    })
       .then(res => res.json())
       .then(data => {
         paginaActual = data.number;

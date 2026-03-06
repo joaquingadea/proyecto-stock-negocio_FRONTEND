@@ -3,8 +3,8 @@ let paginaActual = 0;
 const size = 5;
 export function renderSolicitudes() {
 
-  const main = document.getElementById("mainContent");
-  mainContent.innerHTML = `
+    const mainContent = document.getElementById("mainContent");
+    mainContent.innerHTML = `
   <div class="card shadow m-3 w-75 m-auto mt-4">
   
     <h5 class="p-3 gap-5 text-center">Listado de solicitudes de acceso</h5>
@@ -32,64 +32,88 @@ export function renderSolicitudes() {
       </div>
     </div>
  </div>`;
- let tbody = document.getElementById("tablaSolicitudesVendedores");
- cargarPaginaSolicitudesVendedores(0);
+    let tbody = document.getElementById("tablaSolicitudesVendedores");
+    tbody.addEventListener("click", manejarClickTabla);
+    cargarPaginaSolicitudesVendedores(0);
 
 
 
 
-//export function renderSolicitudes() {return null}
+    //export function renderSolicitudes() {return null}
 
-function renderTablaSolicitudesVendedores(solicitudes) {
-    let filas = "";
-    tbody.innerHTML = ``;
-    solicitudes.forEach(s => {
-        filas += `
+    function renderTablaSolicitudesVendedores(solicitudes) {
+        let filas = "";
+        tbody.innerHTML = ``;
+        solicitudes.forEach(s => {
+            filas += `
             <tr>
                 <td>${s.name}</td>
                 <td class="text-center">
-                    <button class="btn btn-sm btn-success" onclick="aceptarSolicitud(${s.id})">Aceptar</button>
-                    <button class="btn btn-sm btn-danger" onclick="denegarSolicitud(${s.id})">Denegar</button>
+                    <button class="btn btn-aceptar btn-sm btn-success" data-id="${s.id}">Aceptar</button>
+                    <button class="btn btn-denegar btn-sm btn-danger" data-id="${s.id}">Denegar</button>
                 </td>
             </tr>
         `;
-    });
-
-    tbody.innerHTML = filas;
-}
-
-function aceptarSolicitud(id) {
-    // falta agregar confirmación
-    fetch(`http://localhost:8080/admin/set-user/${id}`, {
-        method: "PATCH"
-    })
-}
-
-function denegarSolicitud(id) {
-    //falta confirmación
-    fetch(`http://localhost:8080/admin/deny-user/${id}`, {
-        method: "DELETE"
-    })
-}
-
-function cargarPaginaSolicitudesVendedores(page) {
-    tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando...</td></tr>`;
-
-    fetch(`http://localhost:8080/admin/guests?page=${page}&size=${size}`)
-        .then(res => res.json())
-        .then(data => {
-            paginaActual = data.number;
-            renderTablaSolicitudesVendedores(data.content);
-            renderPaginacionSolicitudesVendedores(data);
         });
-}
+        tbody.innerHTML = filas;
+    }
 
-function renderPaginacionSolicitudesVendedores(data) {
-    const ul = document.getElementById("paginacion");
-    ul.innerHTML = "";
 
-    // Botón Anterior
-    ul.innerHTML += `
+
+    function manejarClickTabla(e) {
+        if (e.target.classList.contains("btn-aceptar")) {
+            aceptarSolicitud(e.target.dataset.id);
+        }
+
+        if (e.target.classList.contains("btn-denegar")) {
+            denegarSolicitud(e.target.dataset.id);
+        }
+    }
+
+    function aceptarSolicitud(id) {
+        // falta agregar confirmación
+        fetch(`http://localhost:8080/admin/set-user/${id}`, {
+            method: "PATCH",
+            credentials: "include"
+        })
+    }
+
+    function denegarSolicitud(id) {
+        //falta confirmación
+        fetch(`http://localhost:8080/admin/deny-user/${id}`, {
+            method: "DELETE",
+            credentials: "include"
+        })
+    }
+
+    function cargarPaginaSolicitudesVendedores(page) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando...</td></tr>`;
+
+        fetch(`http://localhost:8080/admin/guests?page=${page}&size=${size}`, {
+            credentials: "include"
+        })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("HTTP error " + res.status);
+                }
+                return res.json();
+            })
+            .then(data => {
+                paginaActual = data.number;
+                renderTablaSolicitudesVendedores(data.content);
+                renderPaginacionSolicitudesVendedores(data);
+            })
+            .catch(err => {
+                console.error("Error cargando guests:", err);
+            });
+    }
+
+    function renderPaginacionSolicitudesVendedores(data) {
+        const ul = document.getElementById("paginacion");
+        ul.innerHTML = "";
+
+        // Botón Anterior
+        ul.innerHTML += `
         <li class="page-item ${data.first ? 'disabled' : ''}">
             <button class="page-link"
                 ${data.first ? '' : `onclick="cargarPaginaSolicitudesVendedores(${paginaActual - 1})"`}>
@@ -100,8 +124,8 @@ function renderPaginacionSolicitudesVendedores(data) {
         </li>
     `;
 
-    // Texto Página X de Y
-    ul.innerHTML += `
+        // Texto Página X de Y
+        ul.innerHTML += `
         <li class="page-item disabled">
             <span class="page-link bg-white border-0 fw-bold">
                 Página ${data.number + 1} de ${data.totalPages}
@@ -109,8 +133,8 @@ function renderPaginacionSolicitudesVendedores(data) {
         </li>
     `;
 
-    // Botón Siguiente
-    ul.innerHTML += `
+        // Botón Siguiente
+        ul.innerHTML += `
         <li class="page-item ${data.last ? 'disabled' : ''}">
             <button class="page-link"
                 ${data.last ? '' : `onclick="cargarPaginaSolicitudesVendedores(${paginaActual + 1})"`}>
@@ -120,5 +144,5 @@ function renderPaginacionSolicitudesVendedores(data) {
             </button>
         </li>
     `;
-}
+    }
 }

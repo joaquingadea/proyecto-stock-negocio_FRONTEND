@@ -1,13 +1,14 @@
+import { renderCrearProducto } from "./agregar-producto.js";
 import { authState } from "./auth.js";
 import { renderInicio } from "./inicio.js";
 import { renderLogin } from "./login.js";
+import { renderNav } from "./nav.js";
+import { renderNuevaVenta } from "./nueva-venta.js";
 import { renderRegister } from "./register.js";
 import { renderProductos } from "./tabla-productos.js";
-import { renderVentas } from "./tabla-ventas.js";
 import { renderSolicitudes } from "./tabla-solicitudes-vendedores.js";
 import { renderVendedores } from "./tabla-vendedores.js";
-import { renderNuevaVenta } from "./nueva-venta.js";
-import { renderNav } from "./nav.js";
+import { renderVentas } from "./tabla-ventas.js";
 
 const routes = {
   "/login": renderLogin,
@@ -17,6 +18,7 @@ const routes = {
   "/ventas": renderVentas,
   "/solicitudes-vendedores": renderSolicitudes,
   "/vendedores": renderVendedores,
+  "/crear-producto": renderCrearProducto,
   "/nueva-venta": renderNuevaVenta
 };
 

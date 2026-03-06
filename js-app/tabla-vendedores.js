@@ -3,8 +3,8 @@ let paginaActual = 0;
 const size = 5;
 export function renderVendedores() {
 
-  const main = document.getElementById("mainContent");
- mainContent.innerHTML = `
+    const main = document.getElementById("mainContent");
+    mainContent.innerHTML = `
   <div class="card shadow m-3 w-75 m-auto mt-4">
   
     <h5 class="p-3 gap-5 text-center">Listado de vendedores</h5>
@@ -34,8 +34,8 @@ export function renderVendedores() {
       </div>
     </div>
  </div>`;
- tbody = document.getElementById("tablaVendedores");
- cargarPaginaVendedores(0);
+    tbody = document.getElementById("tablaVendedores");
+    cargarPaginaVendedores(0);
 }
 
 
@@ -72,21 +72,25 @@ function renderTablaVendedores(vendedores) {
 function setearAdmin(id) {
     // falta agregar confirmación
     fetch(`http://localhost:8080/admin/set-admin/${id}`, {
-        method: "PATCH"
+        method: "PATCH",
+        credentials: "include"
     })
 }
 
 function revocarPermisos(id) {
     //falta confirmación
     fetch(`http://localhost:8080/admin/revoke-user/${id}`, {
-        method: "PATCH"
+        method: "PATCH",
+        credentials: "include"
     })
 }
 
 function cargarPaginaVendedores(page) {
     tbody.innerHTML = `<tr><td colspan="4" class="text-center">Cargando...</td></tr>`;
 
-    fetch(`http://localhost:8080/admin/sellers?page=${page}&size=${size}`)
+    fetch(`http://localhost:8080/admin/sellers?page=${page}&size=${size}`, {
+        credentials: "include"
+    })
         .then(res => res.json())
         .then(data => {
             paginaActual = data.number;

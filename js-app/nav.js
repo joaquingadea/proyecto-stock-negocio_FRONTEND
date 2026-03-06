@@ -1,5 +1,4 @@
-import { authState } from "./auth.js";
-import { getRoles  } from "./auth.js";
+import { authState, getRoles } from "./auth.js";
 
 /*export function renderNav() {
     const nav = document.getElementById("navBar");
@@ -128,10 +127,20 @@ export function renderNav() {
 
   let ventasLinks = "";
   let adminLinks = "";
+  let productosLinks = "";
 
   // ADMIN ve todo
   if (roles.includes("ROLE_ADMIN")) {
-
+    productosLinks = `
+    <li class="nav-item dropdown">
+      <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+        Productos
+      </button>
+      <ul class="dropdown-menu dropdown-menu-dark">
+        <li><button class="dropdown-item" id="listadoProductos">Listado de productos</button></li>
+        <li><button class="dropdown-item" id="crearProducto">Crear producto</button></li>
+      </ul>
+    `;
     ventasLinks = `
       <li class="nav-item dropdown">
         <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
@@ -159,7 +168,9 @@ export function renderNav() {
 
   // VENDEDOR
   if (roles.includes("ROLE_USER") && !roles.includes("ROLE_ADMIN")) {
-
+    productosLinks = `
+      <li><button class="nav-link" id="listadoProductos">Listado de productos</button></li>
+    `;
     ventasLinks = `
       <li class="nav-item dropdown">
         <button class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
@@ -197,9 +208,7 @@ export function renderNav() {
               <button class="nav-link" id="inicio">Inicio</button>
             </li>
 
-            <li class="nav-item">
-              <button class="nav-link" id="listadoProductos">Listado de productos</button>
-            </li>
+            ${productosLinks}
 
             ${ventasLinks}
 

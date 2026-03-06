@@ -2,16 +2,19 @@ let contadorProductos = 0;
 let productosConStockCache = [];
 let productosAgregadosALaVenta = [];
 
-function buscarNombresProductos() {
-    return fetch("http://localhost:8080/product/names")
-        .then(res => res.json())
-        .then(productos => {
-            productosConStockCache = productos;
-        });
-}
-export function renderNuevaVenta() {
+async function buscarNombresProductos() {
+    const res = await fetch("http://localhost:8080/product/names", { credentials: "include" });
 
-  const main = document.getElementById("mainContent");
+    const data = await res.json();
+
+    console.log("RESPUESTA BACK:", data);
+
+    productosConStockCache = data;
+}
+
+export async function renderNuevaVenta() {
+
+    const mainContent = document.getElementById("mainContent");
     mainContent.innerHTML = `
         <h4 class="p-3 text-center">Nueva venta</h4>
 
@@ -44,28 +47,28 @@ export function renderNuevaVenta() {
         </div>
     `;
 
-    buscarNombresProductos().then(() => {
+    await buscarNombresProductos();
 
-        document.getElementById("agregarProductoVentaBtn")
-            .addEventListener("click", function () {
+    document.getElementById("agregarProductoVentaBtn")
+        .addEventListener("click", function () {
 
-                const container = document.getElementById("productosContainer");
+            const container = document.getElementById("productosContainer");
 
-                // 🔎 VALIDAR ÚLTIMO PRODUCTO
-                const ultimoProducto = container.lastElementChild;
+            // 🔎 VALIDAR ÚLTIMO PRODUCTO
+            const ultimoProducto = container.lastElementChild;
 
-                if (ultimoProducto) {
-                    const selectPrevio = ultimoProducto.querySelector(".producto-select");
+            if (ultimoProducto) {
+                const selectPrevio = ultimoProducto.querySelector(".producto-select");
 
-                    if (!selectPrevio.value) {
-                        alert("Debes seleccionar un producto antes de agregar otro.");
-                        selectPrevio.classList.add("is-invalid");
-                        return;
-                    }
+                if (!selectPrevio.value) {
+                    alert("Debes seleccionar un producto antes de agregar otro.");
+                    selectPrevio.classList.add("is-invalid");
+                    return;
                 }
+            }
 
-                // 🆕 Crear nuevo bloque producto
-                const productoHTML = `
+            // 🆕 Crear nuevo bloque producto
+            const productoHTML = `
                     <div class="position-relative d-flex w-75 card p-3 mt-3 producto-item flex-column align-items-center gap-3">
 
                         <button type="button"
@@ -89,40 +92,40 @@ export function renderNuevaVenta() {
                     </div>
                 `;
 
-                container.insertAdjacentHTML("beforeend", productoHTML);
+            container.insertAdjacentHTML("beforeend", productoHTML);
 
-                const nuevoProducto = container.lastElementChild;
-                const select = nuevoProducto.querySelector(".producto-select");
+            const nuevoProducto = container.lastElementChild;
+            const select = nuevoProducto.querySelector(".producto-select");
 
-                cargarNombresProductosEnSelect(select);
+            cargarNombresProductosEnSelect(select);
 
-                // 🔢 Manejo cantidad
-                let cantidadSpan = nuevoProducto.querySelector(".cantidad");
+            // 🔢 Manejo cantidad
+            let cantidadSpan = nuevoProducto.querySelector(".cantidad");
 
-                nuevoProducto.querySelector(".sumar").addEventListener("click", () => {
-                    cantidadSpan.textContent = parseInt(cantidadSpan.textContent) + 1;
-                });
+            nuevoProducto.querySelector(".sumar").addEventListener("click", () => {
+                cantidadSpan.textContent = parseInt(cantidadSpan.textContent) + 1;
+            });
 
-                nuevoProducto.querySelector(".restar").addEventListener("click", () => {
-                    let valor = parseInt(cantidadSpan.textContent);
-                    if (valor > 1) {
-                        cantidadSpan.textContent = valor - 1;
-                    }
-                });
+            nuevoProducto.querySelector(".restar").addEventListener("click", () => {
+                let valor = parseInt(cantidadSpan.textContent);
+                if (valor > 1) {
+                    cantidadSpan.textContent = valor - 1;
+                }
+            });
 
-                nuevoProducto.querySelector(".eliminar-producto")
+            nuevoProducto.querySelector(".eliminar-producto")
                 .addEventListener("click", () => {
-                  const confirmacion = confirm("¿Seguro que quieres eliminar este producto de la venta?");
-                  if (!confirmacion) return;
+                    const confirmacion = confirm("¿Seguro que quieres eliminar este producto de la venta?");
+                    if (!confirmacion) return;
                     const idProducto = nuevoProducto.querySelector(".producto-select").value;
 
                     productosAgregadosALaVenta = productosAgregadosALaVenta.filter(p => p.id !== idProducto);
 
                     nuevoProducto.remove();
                 });
-            });
-    });
+        });
 }
+
 
 // 🗑 Eliminar producto
 
@@ -195,18 +198,19 @@ function generarVenta() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(ventaDTO)
+        , credentials: "include"
     })
-    .then(res => {
-        if (!res.ok) throw new Error("Error al crear venta");
-        return res.json();
-    })
-    .then(data => {
-        console.log("Venta creada:", data);
-        alert("Venta realizada correctamente");
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error al realizar la venta");
-    });
+        .then(res => {
+            if (!res.ok) throw new Error("Error al crear venta");
+            return res.json();
+        })
+        .then(data => {
+            console.log("Venta creada:", data);
+            alert("Venta realizada correctamente");
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error al realizar la venta");
+        });
 }
 
